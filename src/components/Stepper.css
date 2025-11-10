@@ -1,0 +1,110 @@
+.stepper {
+  margin-bottom: 3rem;
+}
+
+.stepper-list {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.stepper-list::before {
+  content: '';
+  position: absolute;
+  top: 1.25rem;
+  left: 2.5rem;
+  right: 2.5rem;
+  height: 2px;
+  background: #e5e7eb;
+  z-index: 0;
+}
+
+.stepper-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.stepper-marker {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.stepper-item.completed .stepper-marker {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+.stepper-item.active .stepper-marker {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.stepper-item.active .stepper-number {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.stepper-item.upcoming .stepper-marker {
+  background: #ffffff;
+  border-color: #e5e7eb;
+}
+
+.stepper-number {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.stepper-check {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.stepper-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.stepper-item.active .stepper-label {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.stepper-item.completed .stepper-label {
+  color: #111827;
+}
+
+@media (max-width: 640px) {
+  .stepper-label {
+    font-size: 0.75rem;
+  }
+  
+  .stepper-marker {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .stepper-number {
+    font-size: 0.875rem;
+  }
+}
