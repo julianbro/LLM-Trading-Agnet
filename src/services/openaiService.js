@@ -1,12 +1,20 @@
 import OpenAI from 'openai';
 
-// Initialize OpenAI client
+// Initialize OpenAI client only if API key is available
 // In a real app, this should be handled on the backend to keep the API key secure
 // For this prototype, the API key can be set via environment variable
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true // Only for prototype! In production, use a backend
-});
+let openai = null;
+
+try {
+  if (import.meta.env.VITE_OPENAI_API_KEY) {
+    openai = new OpenAI({
+      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true // Only for prototype! In production, use a backend
+    });
+  }
+} catch (error) {
+  console.warn('OpenAI client initialization failed:', error.message);
+}
 
 /**
  * Generates an initial investment plan based on user's financial goals
@@ -17,6 +25,11 @@ const openai = new OpenAI({
  */
 export async function generateInitialPlan(balance, horizon, goal) {
   try {
+    // Check if OpenAI is configured
+    if (!openai) {
+      throw new Error('OpenAI API key is not configured. Please set VITE_OPENAI_API_KEY in your .env file.');
+    }
+
     // Calculate required weekly return
     const weeklyReturnRate = Math.pow(goal / balance, 1 / horizon) - 1;
     const weeklyReturnPercent = (weeklyReturnRate * 100).toFixed(2);
