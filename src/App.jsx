@@ -7,6 +7,7 @@ import InputStep from './components/steps/InputStep'
 import PlanStep from './components/steps/PlanStep'
 import StrategyStep from './components/steps/StrategyStep'
 import TradesStep from './components/steps/TradesStep'
+import { generateInitialPlan } from './services/openaiService'
 
 const STEPS = [
   { id: 1, label: 'Your Goal', component: InputStep },
@@ -28,7 +29,12 @@ function App() {
   const [loadingState, setLoadingState] = useState(null) // null, 'loading', 'error'
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // If moving from step 1 to step 2, generate the plan
+    if (currentStep === 1 && !planData) {
+      await generatePlan()
+    }
+    
     if (currentStep < STEPS.length) {
       setCurrentStep(currentStep + 1)
     }
@@ -37,6 +43,25 @@ function App() {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const generatePlan = async () => {
+    setLoadingState('loading')
+    setErrorMessage('')
+
+    const result = await generateInitialPlan(
+      parseFloat(inputData.balance),
+      parseInt(inputData.horizon),
+      parseFloat(inputData.goal)
+    )
+
+    if (result.success) {
+      setPlanData(result.data)
+      setLoadingState(null)
+    } else {
+      setLoadingState('error')
+      setErrorMessage(result.error || 'Failed to generate plan. Please try again.')
     }
   }
 

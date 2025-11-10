@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import './StepCommon.css'
 
-function InputStep({ inputData, setInputData, onNext }) {
+function InputStep({ inputData, setInputData, loadingState, onNext }) {
   const [errors, setErrors] = useState({})
 
-  const validateAndProceed = () => {
+  const validateAndProceed = async () => {
     const newErrors = {}
     
     if (!inputData.balance || parseFloat(inputData.balance) <= 0) {
@@ -26,7 +26,7 @@ function InputStep({ inputData, setInputData, onNext }) {
     setErrors(newErrors)
 
     if (Object.keys(newErrors).length === 0) {
-      onNext()
+      await onNext()
     }
   }
 
@@ -131,8 +131,9 @@ function InputStep({ inputData, setInputData, onNext }) {
             type="button"
             className="btn btn-primary"
             onClick={validateAndProceed}
+            disabled={loadingState === 'loading'}
           >
-            Next
+            {loadingState === 'loading' ? 'Generating Plan...' : 'Next'}
           </button>
         </div>
       </div>

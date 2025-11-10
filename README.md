@@ -21,11 +21,13 @@ The form includes inline validation to ensure:
 - Target balance is greater than current balance
 
 ### Step 2: Plan Preview
-Based on the user's goal, this step will display:
+Based on the user's goal, this step displays an AI-generated investment plan:
+- **Risk Assessment**: The investment strategy's risk level (Conservative, Moderate, Aggressive, or Very Aggressive)
 - **Required Weekly Return**: Calculated percentage return needed per week to reach the goal
-- **Allocation**: 3-6 cryptocurrency assets with their allocation percentages (displayed as chips)
+- **Initial Coin Ideas**: 3-6 major cryptocurrencies suggested for the portfolio
+- **Strategy Overview**: A brief high-level approach statement from the AI investment wizard
 
-*Note: In this UI shell, placeholders indicate where LLM-generated plan data will appear.*
+*Note: This step now uses OpenAI's GPT-4o-mini model to generate personalized investment recommendations.*
 
 ### Step 3: Strategy
 This step presents the investment strategy:
@@ -82,10 +84,25 @@ Each step can display three states:
 
 ## Development
 
-```bash
-# Install dependencies
-npm install
+### Setup
 
+1. Clone the repository
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure OpenAI API key:
+   - Copy `.env.example` to `.env`
+   - Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+   - Add your key to the `.env` file:
+   ```
+   VITE_OPENAI_API_KEY=sk-your-actual-key-here
+   ```
+
+### Running the App
+
+```bash
 # Start development server
 npm run dev
 
@@ -95,6 +112,8 @@ npm run build
 # Lint code
 npm run lint
 ```
+
+**Important**: The OpenAI API key is required for the Plan Preview step to work. Without it, you'll see an error message when trying to generate an investment plan.
 
 ## Next Steps
 
